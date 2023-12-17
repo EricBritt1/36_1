@@ -1,0 +1,45 @@
+INSERT INTO users (username, password, first_name, last_name, phone, join_at) VALUES ('test52', 'justatest', 'test', 'tester', '999-888-9199', current_timestamp);
+
+Create mock messages
+
+INSERT INTO messages (from_username, to_username, body, sent_at, read_at) VALUES ('coolguy', 'test52', 'Who even are you lmao', current_timestamp, null);
+
+
+  /** Return messages from this user.
+   *
+   * [{id, to_user, body, sent_at, read_at}]
+   *
+   * where to_user is
+   *   {username, first_name, last_name, phone}
+   */
+JOINS
+
+SELECT id, to_username, body, sent_at, read_at FROM messages INNER JOIN users ON messages.to_username = users.username;
+
+
+SELECT messages.id, messages.to_username, messages.body, messages.sent_at, messages.read_at, users.username, users.first_name, users.last_name, users.phone
+FROM messages
+INNER JOIN users ON messages.to_username = users.username;
+
+
+
+SELECT messages.id, messages.to_username AS to_user, messages.body, messages.sent_at, messages.read_at,
+       users.username, users.first_name, users.last_name, users.phone
+FROM messages
+INNER JOIN users ON messages.to_username = users.username
+WHERE messages.from_username = 'test52';
+
+
+ /** Return messages to this user.
+   *
+   * [{id, from_user, body, sent_at, read_at}]
+   *
+   * where from_user is
+   *   {username, first_name, last_name, phone}
+   */
+
+
+SELECT messages.id, messages.from_username, messages.body, messages.sent_at, messages.read_at, users.username, users.first_name, users.last_name, users.phone
+FROM messages
+INNER JOIN users ON messages.from_username = users.username
+WHERE messages.to_username = 'test52';
